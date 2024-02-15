@@ -2,7 +2,9 @@ package com.example.valourinfotechschoolapp08022024;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -25,15 +27,19 @@ import retrofit2.Response;
 
 public class MainActivity extends AppCompatActivity {
     ActivityMainBinding binding;
-
+    String Username="";
+     String Classname="";
+     SharedPreferences sharedpreferences;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
         setSupportActionBar(binding.toolbar);
+        sharedpreferences = getSharedPreferences("MyPREFERENCES", Context.MODE_PRIVATE);
         binding.year.setText("Student Year :" + getIntent().getStringExtra("Year"));
         binding.studentId.setText("Student Id " + getIntent().getStringExtra("UserId"));
+        userDashboardData();
         binding.userDetailsBtn.setOnClickListener(v -> {
             userDashboardData();
         });
@@ -60,6 +66,8 @@ public class MainActivity extends AppCompatActivity {
         else if (id == R.id.item3) {
             Intent intent = new Intent(MainActivity.this,SubmissionActivity.class);
             intent.putExtra("UserId",""+getIntent().getStringExtra("UserId"));
+            intent.putExtra("UserName",""+Username);
+            intent.putExtra("ClassName",""+Classname);
             startActivity(intent);
         } else if (id ==R.id.item4) {
             Intent intent = new Intent(MainActivity.this,AttendenceActivity.class);
@@ -73,7 +81,12 @@ public class MainActivity extends AppCompatActivity {
     }
     void userDashboardData() {
         JsonObject request = new JsonObject();
-        request.addProperty("StudentId", getIntent().getStringExtra("UserId"));
+        if (sharedpreferences.getString("userId","").isEmpty()){
+            request.addProperty("StudentId", getIntent().getStringExtra("UserId"));
+        }else {
+            request.addProperty("StudentId", sharedpreferences.getString("userId",""));
+        }
+
         RetrofitClient.getClient().StudentDashBoard(request).enqueue(new Callback<StudentDashBoard>() {
             @Override
             public void onResponse(Call<StudentDashBoard> call, Response<StudentDashBoard> response) {
@@ -87,7 +100,13 @@ public class MainActivity extends AppCompatActivity {
                     binding.txt.setText("Student Id  :"+response.body().getStudentHomePageAndDashboard().getStudentId()+"\n"+
                                         "RegistrationDate  :"+response.body().getStudentHomePageAndDashboard().getRegistrationDate()+"\n"+
                                         "ClassName  :"+response.body().getStudentHomePageAndDashboard().getClassName()+"\n"+
-                                        "StudentName  :"+response.body().getStudentHomePageAndDashboard().getStudentName()+"\n");
+                                        "StudentName  :"+response.body().getStudentHomePageAndDashboard().getStudentName()+"\n"+
+                                        "Gurdian Name  :"+response.body().getStudentHomePageAndDashboard().getGuardianName() +"\n"+
+                                        "Gender  :"+response.body().getStudentHomePageAndDashboard().getGender() +"\n"+
+                                        "Category  :"+response.body().getStudentHomePageAndDashboard().getCategory() +"\n");
+                                        Username=response.body().getStudentHomePageAndDashboard().getStudentName();
+                                        Classname=response.body().getStudentHomePageAndDashboard().getClassName();
+
                 } else{
                     Toast.makeText(MainActivity.this, "response is not successfully"+response.body(), Toast.LENGTH_SHORT).show();
                 }
@@ -98,4 +117,5 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
+
 }

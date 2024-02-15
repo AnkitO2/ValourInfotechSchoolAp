@@ -17,8 +17,17 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <activity
+            android:name=".SpashActivity"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
             android:name=".AttendenceActivity"
-            android:exported="false" />
+            android:exported="true" />
         <activity
             android:name=".SubmissionActivity"
             android:exported="false" />
@@ -28,21 +37,13 @@
         <activity
             android:name=".LeaveActivity"
             android:exported="false" />
-        <activity
-            android:name=".StudentLeaveApplication"
-            android:exported="false" />
+
         <activity
             android:name=".LoginActitiy"
-            android:exported="true">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
+            android:exported="false">
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
-        <activity
-            android:name=".SplashActivity"
-            android:exported="false" />
+
         <activity
             android:name=".MainActivity"
             android:exported="false" />
