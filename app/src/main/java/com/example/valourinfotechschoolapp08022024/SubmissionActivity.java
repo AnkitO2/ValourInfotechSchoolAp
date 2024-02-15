@@ -1,9 +1,14 @@
 package com.example.valourinfotechschoolapp08022024;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.widget.Toast;
 
 import com.example.valourinfotechschoolapp08022024.databinding.ActivitySubmissionBinding;
@@ -17,11 +22,44 @@ import retrofit2.Response;
 
 public class SubmissionActivity extends AppCompatActivity {
 private ActivitySubmissionBinding binding;
+ @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater m=getMenuInflater();
+        m.inflate(R.menu.menubaar,menu);
+        return true;
+    }
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        int id= item.getItemId();
+        if (id==R.id.item1){
+            Intent intent = new Intent(SubmissionActivity.this,LeaveActivity.class);
+            startActivity(intent);
+        }
+        else if (id==R.id.item2) {
+            Intent intent = new Intent(SubmissionActivity.this, CalenderActivity.class);
+           // intent.putExtra("UserId",""+getIntent().getStringExtra("UserId"));
+            startActivity(intent);
+        }
+        else if (id == R.id.item3) {
+            Intent intent = new Intent(SubmissionActivity.this,MainActivity.class);
+            FeesSubmissionDetails();
+//            intent.putExtra("UserId",""+getIntent().getStringExtra("UserId"));
+            startActivity(intent);
+        } else if (id ==R.id.item4) {
+            Intent intent = new Intent(SubmissionActivity.this,AttendenceActivity.class);
+           // intent.putExtra("UserId",""+getIntent().getStringExtra("UserId"));
+            startActivity(intent);
+        } else if (id==R.id.item5) {
+            Intent intent = new Intent(SubmissionActivity.this, LoginActitiy.class);
+            startActivity(intent);
+        }
+        return super.onOptionsItemSelected(item);
+    }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = ActivitySubmissionBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+        setSupportActionBar(binding.toolbar);
         binding.studentId.setText(""+getIntent().getStringExtra("UserId"));
         FeesSubmissionDetails();
     }
@@ -57,7 +95,7 @@ private ActivitySubmissionBinding binding;
                      binding.textId9.setText(response.body().getStudentFeesSubmission().getPaymentHead());
                      binding.textId10.setText(response.body().getStudentFeesSubmission().getPaymentMode());
                      binding.textId11.setText(response.body().getStudentFeesSubmission().getSectionName());
-                     binding.textId12.setText(response.body().getStudentFeesSubmission().getStudentName());
+                     binding.studentName.setText(response.body().getStudentFeesSubmission().getStudentName());
                      binding.textId13.setText(response.body().getStudentFeesSubmission().getTotalPaid());
                      //binding.textId12.setText(response.body().getStudentFeesSubmission().getStudentId());
                 }else {

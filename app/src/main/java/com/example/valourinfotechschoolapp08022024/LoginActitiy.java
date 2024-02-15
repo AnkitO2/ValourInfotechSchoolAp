@@ -31,7 +31,6 @@ public class LoginActitiy extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         binding = ActivityLoginBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
-
         binding.loginBtn.setOnClickListener(v -> {
           if (binding.usernameInputEditText.getText().toString().isEmpty()) {
               Toast.makeText(this, "Please Enter User Id", Toast.LENGTH_SHORT).show();
@@ -39,10 +38,8 @@ public class LoginActitiy extends AppCompatActivity {
               Toast.makeText(this, "Please Enter Password", Toast.LENGTH_SHORT).show();
           }else {
               studentLogin();
-
           }
         });
-
     }
 
     void studentLogin(){
@@ -58,7 +55,6 @@ public class LoginActitiy extends AppCompatActivity {
                         intent.putExtra("Year",""+response.body().getUserIdDetails().getFinYear());
                         intent.putExtra("UserId",""+response.body().getUserIdDetails().getStudentId());
                         startActivity(intent);
-
                     }else {
                         Toast.makeText(LoginActitiy.this, "response is not successfully"+response.body().getLoginMessage(), Toast.LENGTH_SHORT).show();
                     }

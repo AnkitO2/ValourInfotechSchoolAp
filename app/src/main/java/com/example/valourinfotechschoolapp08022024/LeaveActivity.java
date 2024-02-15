@@ -1,9 +1,14 @@
 package com.example.valourinfotechschoolapp08022024;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
@@ -19,11 +24,37 @@ import retrofit2.Response;
 public class LeaveActivity extends AppCompatActivity {
 private ActivityLeaveBinding binding;
     @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater m=getMenuInflater();
+        m.inflate(R.menu.menubaar,menu);
+        return true;
+    }
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        int id= item.getItemId();
+        if (id==R.id.item1){
+            Intent intent = new Intent(LeaveActivity.this,MainActivity.class);
+            StudentLeaveDetails();
+            startActivity(intent);
+        } else if (id ==R.id.item2) {
+            Intent intent =new Intent(LeaveActivity.this,CalenderActivity.class);
+            startActivity(intent);
+        } else if (id==R.id.item3) {
+            Intent intent = new Intent(LeaveActivity.this,SubmissionActivity.class);
+            startActivity(intent);
+        } else if (id==R.id.item4) {
+            Intent intent =new Intent(LeaveActivity.this,AttendenceActivity.class);
+            startActivity(intent);
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding=ActivityLeaveBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
-
+        setSupportActionBar(binding.toolbar);
         binding.studentId.setText(""+getIntent().getStringExtra("UserId"));
 
     binding.SubmitButton.setOnClickListener(new View.OnClickListener() {
@@ -47,7 +78,6 @@ private ActivityLeaveBinding binding;
             @Override
             public void onResponse(Call<StudentLeaveResponse> call, Response<StudentLeaveResponse> response) {
                 if (response.isSuccessful()){
-
                     Log.d("Response", "Body: " + response.body().toString());
                     binding.studentIdId.setText(response.body().getStudentLeaveDetails().getStudentId());
                     binding.LeaveDays.setText(response.body().getStudentLeaveDetails().getLeaveDays());

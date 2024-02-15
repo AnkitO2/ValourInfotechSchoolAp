@@ -27,10 +27,45 @@ import retrofit2.Response;
 public class CalenderActivity extends AppCompatActivity {
 private ActivityCalenderBinding binding;
     @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater m=getMenuInflater();
+        m.inflate(R.menu.menubaar,menu);
+        return true;
+    }
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        int id= item.getItemId();
+        if (id==R.id.item1){
+            Intent intent = new Intent(CalenderActivity.this,LeaveActivity.class);
+            intent.putExtra("UserId",""+getIntent().getStringExtra("UserId"));
+            startActivity(intent);
+        }
+        else if (id==R.id.item2) {
+            Intent intent = new Intent(CalenderActivity.this,MainActivity.class);
+             intent.putExtra("UserId",""+getIntent().getStringExtra("UserId"));
+             HolidayCalender();
+            startActivity(intent);
+        }
+        else if (id == R.id.item3) {
+            Intent intent = new Intent(CalenderActivity.this,SubmissionActivity.class);
+             startActivity(intent);
+          intent.putExtra("UserId",""+getIntent().getStringExtra("UserId"));
+            startActivity(intent);
+        } else if (id ==R.id.item4) {
+            Intent intent = new Intent(CalenderActivity.this,AttendenceActivity.class);
+             intent.putExtra("UserId",""+getIntent().getStringExtra("UserId"));
+            startActivity(intent);
+        } else if (id==R.id.item5) {
+            Intent intent = new Intent(CalenderActivity.this, LoginActitiy.class);
+            startActivity(intent);
+        }
+        return super.onOptionsItemSelected(item);
+    }
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = ActivityCalenderBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+        setSupportActionBar(binding.toolbar);
         binding.studentId.setText(""+getIntent().getStringExtra("UserId"));
         HolidayCalender();
     }

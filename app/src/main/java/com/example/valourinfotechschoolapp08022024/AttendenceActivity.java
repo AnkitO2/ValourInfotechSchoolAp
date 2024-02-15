@@ -1,9 +1,14 @@
 package com.example.valourinfotechschoolapp08022024;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.widget.Toast;
 
 import com.example.valourinfotechschoolapp08022024.databinding.ActivityAttendenceBinding;
@@ -21,10 +26,46 @@ import retrofit2.Response;
 public class AttendenceActivity extends AppCompatActivity {
 private ActivityAttendenceBinding binding;
     @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater m=getMenuInflater();
+        m.inflate(R.menu.menubaar,menu);
+        return true;
+    }
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        int id= item.getItemId();
+        if (id==R.id.item1){
+            Intent intent = new Intent(AttendenceActivity.this,LeaveActivity.class);
+            intent.putExtra("UserId",""+getIntent().getStringExtra("UserId"));
+            startActivity(intent);
+        }
+        else if (id==R.id.item2) {
+            Intent intent = new Intent(AttendenceActivity.this,CalenderActivity.class);
+            intent.putExtra("UserId",""+getIntent().getStringExtra("UserId"));
+            startActivity(intent);
+        }
+        else if (id == R.id.item3) {
+            Intent intent = new Intent(AttendenceActivity.this,SubmissionActivity.class);
+            startActivity(intent);
+            intent.putExtra("UserId",""+getIntent().getStringExtra("UserId"));
+            startActivity(intent);
+        } else if (id ==R.id.item4) {
+            Intent intent = new Intent(AttendenceActivity.this,MainActivity.class);
+            intent.putExtra("UserId",""+getIntent().getStringExtra("UserId"));
+            startActivity(intent);
+            StudentAttendenceDetail();
+        } else if (id==R.id.item5) {
+            Intent intent = new Intent(AttendenceActivity.this, LoginActitiy.class);
+            startActivity(intent);
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding =ActivityAttendenceBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+        setSupportActionBar(binding.toolbar);
         binding.studentId.setText(""+getIntent().getStringExtra("UserId"));
         StudentAttendenceDetail();
     }
